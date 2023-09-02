@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Polygon Blockchain App</title>
+</head>
+<body>
+<h1 style="text-align:center;">Polygon Blockchain App </h1>
+    
+<form id="userForm" style="max-width:500px;margin:auto">
+    <h2>User Form</h2>
+    <div class="input-container">
+      <i class="fa fa-user icon"></i>
+      <input class="input-field" type="text" placeholder="Username" name="user">
+    </div>
+  
+    <div class="input-container">
+      <i class="fa fa-bank icon"></i>
+      <input class="input-field" type="number" placeholder="Acount Number" name="accountNumber">
+    </div>
+    
+    <div class="input-container">
+      <i class="fa fa-bar-chart-o icon"></i>
+      <input class="input-field" type="number" placeholder="Balance" name="balance">
+    </div>
+
+    <div class="input-container">
+        <i class="fa fa-credit-card icon"></i>
+        <select class="input-field" name="type">
+            <option value="credit">Credit</option>
+            <option value="debit">Debit</option>
+        </select>
+    </div>
+
+    <div class="input-container">
+        <i class="fa fa-usd icon"></i>
+        <input class="input-field" type="number" placeholder="Amount" name="amount">
+    </div>
+  
+    <div class="input-container">
+        <i class="fa fa-calendar icon"></i>
+        <input class="input-field" type="datetime-local" placeholder="Timestamp" name="timestamp">
+    </div>
+    <button type="submit" class="btn">Register</button>
+  </form>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var formulario = document.getElementById("userForm");
+
+        formulario.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(formulario);
+
+            var jsonData = {};
+            formData.forEach(function (value, key) {
+                jsonData[key] = value;
+            });
+
+            console.log(JSON.stringify(jsonData));
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
+
+
