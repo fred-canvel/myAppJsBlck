@@ -11,9 +11,9 @@ module.exports = {
       url: process.env.API_URL,
       accounts: [process.env.PRIVATE_KEY],
     },
-    matic: {
-      url: process.env.MATIC_URL,
-      accounts: [process.env.PRIVATE_KEY],
+    matic:{
+      url:API_URL,
+      accounts:[`0x${PRIVATE_KEY}`]
     }
   }
 };
