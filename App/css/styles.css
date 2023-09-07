@@ -41,3 +41,19 @@
 .btn:hover {
   opacity: 1;
 }
+
+
+button {
+  background-color: dodgerblue;
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity: 0.6;
+  background-color: rgb(223, 163, 34);
+}

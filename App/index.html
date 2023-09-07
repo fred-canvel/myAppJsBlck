@@ -3,14 +3,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/App/css/styles.css">
     <title>Polygon Blockchain App</title>
 </head>
 <body>
 <h1 style="text-align:center;">Polygon Blockchain App </h1>
     
 <form id="formuserdata" style="max-width:500px;margin:auto">
-    <h2>Register Form</h2>
+    <h2>Register Form</h2> 
+    <div class="input-container">
+        <button id="btnMtmsk">Connect Metamask</button>
+    </div>
     <div class="input-container">
       <i class="fa fa-user icon"></i>
       <input class="input-field" type="text" placeholder="Username" name="user">
@@ -46,7 +49,27 @@
     <button type="submit" class="btn">Register</button>
   </form>
 
+  
 <script>
+// conec metamask
+document.getElementById('btnMtmsk').addEventListener('click', event => {
+        let account;
+        let button = event.target;
+        ethereum.request({method: 'eth_requestAccounts'}).then(accounts => {
+          account = accounts[0];
+          console.log(account);
+          button.textContent = "Address: " + account;
+
+          ethereum.request({method: 'eth_getBalance' , params: [account, 'latest']}).then(result => {
+            console.log(result);
+            let wei = parseInt(result,16);
+            let balance = wei / (10**18);
+            alert(balance + " MATIC")
+          });
+        });
+      });
+
+//form user data
     document.addEventListener("DOMContentLoaded", function () {
         var formulario = document.getElementById("formuserdata");
 
