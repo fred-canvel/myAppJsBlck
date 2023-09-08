@@ -1,34 +1,50 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
+contract UserRegistration {
 
-contract Lock {
-    uint public unlockTime;
-    address payable public owner;
-
-    event Withdrawal(uint amount, uint when);
-
-    constructor(uint _unlockTime) payable {
-        require(
-            block.timestamp < _unlockTime,
-            "Unlock time should be in the future"
-        );
-
-        unlockTime = _unlockTime;
-        owner = payable(msg.sender);
+ string public storedJSON;   
+ function setJSON(string memory jsonData) public {
+        storedJSON = jsonData;
+    }
+    
+    struct UserData {
+        string user;
+        uint256 accountNumber;
+        uint256 balance;
+        string transactionType;
+        uint256 amount;
+        uint256 timestamp;
     }
 
-    function withdraw() public {
-        // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+    UserData[] public userRecords;
 
-        require(block.timestamp >= unlockTime, "You can't withdraw yet");
-        require(msg.sender == owner, "You aren't the owner");
+    function registerUser(
+        string memory user,
+        uint256 accountNumber,
+        uint256 balance,
+        string memory transactionType,
+        uint256 amount,
+        uint256 timestamp
+    ) public {
+        UserData memory newUser = UserData({
+            user: user,
+            accountNumber: accountNumber,
+            balance: balance,
+            transactionType: transactionType,
+            amount: amount,
+            timestamp: timestamp
+        });
 
-        emit Withdrawal(address(this).balance, block.timestamp);
+        userRecords.push(newUser);
+    }
 
-        owner.transfer(address(this).balance);
+    function getUserRecordsCount() public view returns (uint256) {
+        return userRecords.length;
+    }
+
+    function getUserRecord(uint256 index) public view returns (UserData memory) {
+        require(index < userRecords.length, "Index out of bounds");
+        return userRecords[index];
     }
 }

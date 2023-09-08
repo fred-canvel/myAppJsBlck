@@ -1,59 +1,54 @@
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/App/css/styles.css">
-    <title>Polygon Blockchain Dapp</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/App/css/styles.css">
+  <title>Polygon Dapp</title>
 </head>
 <body>
-<h1 style="text-align:center;">Polygon Blockchain Dapp </h1>
-    
-<form id="formuserdata" style="max-width:500px;margin:auto">
-    <h2>Register Form</h2> 
+  <div class="container">
+    <h1 class="mt-5" id="custom-title">Confidential User Information</h1>
     <div class="input-container">
-        <button id="btnMtmsk">Connect Metamask</button>
-    </div>
-    <div class="input-container">
-      <i class="fa fa-user icon"></i>
-      <input class="input-field" type="text" placeholder="Username" name="user">
-    </div>
-  
-    <div class="input-container">
-      <i class="fa fa-bank icon"></i>
-      <input class="input-field" type="number" placeholder="Acount Number" name="accountNumber">
-    </div>
-    
-    <div class="input-container">
-      <i class="fa fa-bar-chart-o icon"></i>
-      <input class="input-field" type="number" placeholder="Balance" name="balance">
-    </div>
+      <button class="btn btn-outline-warning" id="btnMtmsk">Connect Metamask</button>
+  </div>
+    <form id="registrationForm">
+      <div class="form-group">
+        <label for="user">User:</label>
+        <input type="text" class="form-control" id="user" name="user" required>
+      </div>
 
-    <div class="input-container">
-        <i class="fa fa-credit-card icon"></i>
-        <select class="input-field" name="type">
-            <option value="credit">Credit</option>
-            <option value="debit">Debit</option>
-        </select>
-    </div>
+      <div class="form-group">
+        <label for="accountNumber">Account Number:</label>
+        <input type="number" class="form-control" id="accountNumber" name="accountNumber" required>
+      </div>
 
-    <div class="input-container">
-        <i class="fa fa-usd icon"></i>
-        <input class="input-field" type="number" placeholder="Amount" name="amount">
-    </div>
-  
-    <div class="input-container">
-        <i class="fa fa-calendar icon"></i>
-        <input class="input-field" type="datetime-local" placeholder="Timestamp" name="timestamp">
-    </div>
-    <button type="submit" class="btn">Register</button>
-  </form>
+      <div class="form-group">
+        <label for="balance">Balance:</label>
+        <input type="number" class="form-control" id="balance" name="balance" required>
+      </div>
 
-  
-<script>
-  
-// conec metamask
-document.getElementById('btnMtmsk').addEventListener('click', event => {
+      <div class="form-group">
+        <label for="transactionType">Transaction Type:</label>
+        <input type="text" class="form-control" id="transactionType" name="transactionType" required>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount:</label>
+        <input type="number" class="form-control" id="amount" name="amount" required>
+      </div>
+
+      <div class="form-group">
+        <label for="timestamp">Timestamp:</label>
+        <input type="datetime-local" class="form-control" id="timestamp" name="timestamp" required>
+      </div>
+
+      <button type="button" class="btn btn-primary" onclick="registerUser()">Register User</button>
+    </form>
+  </div>
+  <script>
+    // conect metamask
+    document.getElementById('btnMtmsk').addEventListener('click', event => {
         let account;
         let button = event.target;
         ethereum.request({method: 'eth_requestAccounts'}).then(accounts => {
@@ -69,79 +64,27 @@ document.getElementById('btnMtmsk').addEventListener('click', event => {
           });
         });
       });
-/*
-//form user data
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var formulario = document.getElementById("formuserdata");
-
-        formulario.addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            var formData = new FormData(formulario);
-
-            var jsonData = {};
-            formData.forEach(function (value, key) {
-                jsonData[key] = value;
-            });
-
-            console.log(JSON.stringify(jsonData));
-        });
-    });
-*/
-
-  // Formulario de registro de usuario
-  document.addEventListener("DOMContentLoaded", function () {
-    var formulario = document.getElementById("formuserdata");
-
-    formulario.addEventListener("submit", async function (e) {
-      e.preventDefault();
-
-      var formData = new FormData(formulario);
-
-      var jsonData = {};
-      formData.forEach(function (value, key) {
-        jsonData[key] = value;
-      });
-
-      // Llama a la función para enviar los datos a Polygon
-      await sendDataToPolygon(jsonData);
-    });
-  });
-
-  // Función para enviar datos a Polygon
-  async function sendDataToPolygon(formData) {
-    const contractAddress = "0x8B9cb9748a7B63F1Dc5f7B538AfDC24E731e1978"; // Reemplaza con la dirección de tu contrato en Polygon
-    const rpcUrl = "https://polygon-mumbai.g.alchemy.com/v2/8b54FOgQ8ZVF-dP6CAY8uopbGwt9nEHl"; // Reemplaza con tu URL JSON-RPC de Alchemy
-
-    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(contractAddress,[{"inputs":[{"internalType":"uint256","name":"_unlockTime","type":"uint256"}],"stateMutability":"payable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"when","type":"uint256"}],"name":"Withdrawal","type":"event"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address payable","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unlockTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}], signer); // Reemplaza [...] con el ABI de tu contrato
-
-    try {
-      // Llama a la función de registro en tu contrato
-      const tx = await contract.registerUser(
-        formData.user,
-        formData.accountNumber,
-        formData.balance,
-        formData.type,
-        formData.amount,
-        Date.parse(formData.timestamp) / 1000 // Convierte la fecha a formato Unix
-      );
-
-      await tx.wait();
-      alert('Registro exitoso en Polygon.');
-    } catch (error) {
-      console.error(error);
-      alert('Error al registrar en Polygon.');
+    async function registerUser() {
+      const user = document.getElementById('user').value;
+      const accountNumber = document.getElementById('accountNumber').value;
+      const balance = document.getElementById('balance').value;
+      const transactionType = document.getElementById('transactionType').value;
+      const amount = document.getElementById('amount').value;
+      const timestamp = document.getElementById('timestamp').value;
+      // Crear un objeto JSON con la información del formulario
+      const userData = {
+        user: user,
+        accountNumber: parseInt(accountNumber),
+        balance: parseInt(balance),
+        transactionType: transactionType,
+        amount: parseInt(amount),
+        timestamp: parseInt(timestamp)
+      };
+      console.log(userData);
     }
-  }
-
-    
-</script>
-<script src="https://cdn.ethers.io/lib/ethers-5.5.0.min.js"></script>
-
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-
