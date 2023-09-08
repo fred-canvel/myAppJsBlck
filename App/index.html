@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/App/css/styles.css">
-    <title>Polygon Blockchain App</title>
+    <title>Polygon Blockchain Dapp</title>
 </head>
 <body>
-<h1 style="text-align:center;">Polygon Blockchain App </h1>
+<h1 style="text-align:center;">Polygon Blockchain Dapp </h1>
     
 <form id="formuserdata" style="max-width:500px;margin:auto">
     <h2>Register Form</h2> 
@@ -51,6 +51,7 @@
 
   
 <script>
+  
 // conec metamask
 document.getElementById('btnMtmsk').addEventListener('click', event => {
         let account;
@@ -68,8 +69,9 @@ document.getElementById('btnMtmsk').addEventListener('click', event => {
           });
         });
       });
-
+/*
 //form user data
+
     document.addEventListener("DOMContentLoaded", function () {
         var formulario = document.getElementById("formuserdata");
 
@@ -86,7 +88,59 @@ document.getElementById('btnMtmsk').addEventListener('click', event => {
             console.log(JSON.stringify(jsonData));
         });
     });
+*/
+
+  // Formulario de registro de usuario
+  document.addEventListener("DOMContentLoaded", function () {
+    var formulario = document.getElementById("formuserdata");
+
+    formulario.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      var formData = new FormData(formulario);
+
+      var jsonData = {};
+      formData.forEach(function (value, key) {
+        jsonData[key] = value;
+      });
+
+      // Llama a la función para enviar los datos a Polygon
+      await sendDataToPolygon(jsonData);
+    });
+  });
+
+  // Función para enviar datos a Polygon
+  async function sendDataToPolygon(formData) {
+    const contractAddress = "0x8B9cb9748a7B63F1Dc5f7B538AfDC24E731e1978"; // Reemplaza con la dirección de tu contrato en Polygon
+    const rpcUrl = "https://polygon-mumbai.g.alchemy.com/v2/8b54FOgQ8ZVF-dP6CAY8uopbGwt9nEHl"; // Reemplaza con tu URL JSON-RPC de Alchemy
+
+    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractAddress,[{"inputs":[{"internalType":"uint256","name":"_unlockTime","type":"uint256"}],"stateMutability":"payable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"when","type":"uint256"}],"name":"Withdrawal","type":"event"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address payable","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unlockTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}], signer); // Reemplaza [...] con el ABI de tu contrato
+
+    try {
+      // Llama a la función de registro en tu contrato
+      const tx = await contract.registerUser(
+        formData.user,
+        formData.accountNumber,
+        formData.balance,
+        formData.type,
+        formData.amount,
+        Date.parse(formData.timestamp) / 1000 // Convierte la fecha a formato Unix
+      );
+
+      await tx.wait();
+      alert('Registro exitoso en Polygon.');
+    } catch (error) {
+      console.error(error);
+      alert('Error al registrar en Polygon.');
+    }
+  }
+
+    
 </script>
+<script src="https://cdn.ethers.io/lib/ethers-5.5.0.min.js"></script>
+
 </body>
 </html>
 
